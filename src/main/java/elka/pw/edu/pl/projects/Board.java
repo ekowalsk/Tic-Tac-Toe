@@ -4,7 +4,7 @@ import elka.pw.edu.pl.projects.Enums.FieldType;
 
 
 /**
- * Board represents popular paper and pencil game
+ * Board stores board used in tictactoe game
  */
 public class Board {
 
@@ -22,8 +22,11 @@ public class Board {
         return board;
     }
 
-    public void setBoard(FieldType[][] board) {
-        this.board = board;
+    public void setBoard(FieldType[][] otherBoard) {
+        for (int x = 0; x < 3; x++)
+            for (int y = 0; y < 3; y++) {
+                board[x][y] = otherBoard[x][y];
+            }
     }
 
     public void setField(int x, int y, FieldType value) {
