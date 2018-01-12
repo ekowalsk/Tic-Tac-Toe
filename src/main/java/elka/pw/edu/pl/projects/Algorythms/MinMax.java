@@ -2,48 +2,92 @@ package elka.pw.edu.pl.projects.Algorythms;
 
 import elka.pw.edu.pl.projects.Board;
 import elka.pw.edu.pl.projects.Enums.FieldType;
-
-import java.util.List;
+import elka.pw.edu.pl.projects.MoveTrack;
+import elka.pw.edu.pl.projects.Position;
 
 public class MinMax {
-    private Game currentState;
+    public Game currentState;
+    public MoveTrack[] possibleMoves;
+    public int MoveIndex;
 
     public MinMax(Game state) {
-        this.currentState.setBoard(state.getBoard());
+        currentState = new Game(state.getBoard(), state.getPlayerSymbol());
+        possibleMoves = new MoveTrack[400];
     }
+
+    public void findAllMoves(Game game, MoveTrack[] moves) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
+                if (game.getBoard().getField(x, y) == FieldType.E) {
+                    Board newBoard = new Board();
+                    newBoard.setBoard(game.getBoard().getBoard());
+                    newBoard.setField(x, y, game.getPlayerSymbol());
+                    Game newGame = new Game(newBoard, game.getOpponentSymbol());
+                    MoveTrack moveTrack = new MoveTrack(newGame);
+                    moveTrack.addMove(new Position(x, y));
+                    int index = 0;
+                    while(moves[index] != null)
+                        index++;
+                    moves[index] = moveTrack;
+                }
+            }
+        }
+    }
+
 
     public int doMinMax(int n, Board board) {
         int ret;
         int tmp;
-        Game game = new Game(board, FieldType.CIRCLE);
+        MoveTrack[] moves = new MoveTrack[100];
+        Game game = new Game(board, FieldType.O);
 
         if (n % 2 == 1) {
-            game.setPlayerSymbol(FieldType.CIRCLE);
-            game.setOpponentSymbol(FieldType.CROSS);
+            game.setPlayerSymbol(FieldType.X);
+            game.setOpponentSymbol(FieldType.O);
         } else {
-            game.setPlayerSymbol(FieldType.CROSS);
-            game.setOpponentSymbol(FieldType.CIRCLE);
+            game.setPlayerSymbol(FieldType.O);
+            game.setOpponentSymbol(FieldType.X);
         }
 
-        if (game.getPlayerSymbol() == FieldType.CIRCLE)
-            ret = 1000;
+        if (game.getPlayerSymbol() == FieldType.O)
+            ret = Integer.MAX_VALUE;
         else
-            ret = -1000;
+            ret = Integer.MIN_VALUE;
 
-        if (n > 0){
-            game.findAllMoves();
+        if (n > 0) {
+            findAllMoves(game, moves);
+        }
+        for (int i = 0; moves[i] != null; i++){
+            moves[i].getGame().getBoard().print();
         }
 
-        if (n == 0)
+        if (n == 0 || moves[0] == null)
             return game.rateBoard();
-        List<Board> moves = game.getPossibleMoves();
-        for (Board mv : moves){
-            tmp = doMinMax(n-1, mv);
-            if ( game.getPlayerSymbol() == FieldType.CROSS )
-                ret = ( ret > tmp ? ret : tmp );
+        for (int k = 0; moves[k] != null; k++) {
+            tmp = doMinMax(n-1, moves[k].getGame().getBoard());
+            if (game.getPlayerSymbol() == FieldType.X)
+                ret = (ret > tmp ? ret : tmp);
             else
-                ret = ( ret < tmp ? ret : tmp );
+                ret = (ret < tmp ? ret : tmp);
         }
         return ret;
+    }
+
+    public int chooseMove( int nMoves) {
+        int index = 0, maxPoints = Integer.MIN_VALUE, currentPoints = 0;
+        int i = 0;
+        findAllMoves(currentState, possibleMoves);
+        for (int l = 0; possibleMoves[l] != null; l++)
+            possibleMoves[l].getGame().getBoard().print();
+        while (possibleMoves[i] != null) {
+            if ((currentPoints = doMinMax(nMoves, possibleMoves[i].getGame().getBoard())) > maxPoints) {
+                maxPoints = currentPoints;
+                index = i;
+            }
+            i++;
+        }
+        currentState.setBoard(possibleMoves[index].getGame().getBoard());
+        possibleMoves[0] = possibleMoves[index];
+        return index;
     }
 }
