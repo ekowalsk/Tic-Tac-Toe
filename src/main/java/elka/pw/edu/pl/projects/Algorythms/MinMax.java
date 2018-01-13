@@ -8,7 +8,6 @@ import elka.pw.edu.pl.projects.Position;
 public class MinMax {
     public Game currentState;
     public MoveTrack[] possibleMoves;
-    public int MoveIndex;
 
     public MinMax(Game state) {
         currentState = new Game(state.getBoard(), state.getPlayerSymbol());
@@ -26,7 +25,7 @@ public class MinMax {
                     MoveTrack moveTrack = new MoveTrack(newGame);
                     moveTrack.addMove(new Position(x, y));
                     int index = 0;
-                    while(moves[index] != null)
+                    while (moves[index] != null)
                         index++;
                     moves[index] = moveTrack;
                 }
@@ -50,22 +49,23 @@ public class MinMax {
         }
 
         if (game.getPlayerSymbol() == FieldType.O)
-            ret = Integer.MAX_VALUE;
-        else
             ret = Integer.MIN_VALUE;
+        else
+            ret = Integer.MAX_VALUE;
 
         if (n > 0) {
             findAllMoves(game, moves);
         }
-        for (int i = 0; moves[i] != null; i++){
+        for (int i = 0; moves[i] != null; i++) {
             moves[i].getGame().getBoard().print();
         }
 
-        if (n == 0 || moves[0] == null)
+        if (n == 0 || moves[0] == null) {
             return game.rateBoard();
+        }
         for (int k = 0; moves[k] != null; k++) {
-            tmp = doMinMax(n-1, moves[k].getGame().getBoard());
-            if (game.getPlayerSymbol() == FieldType.X)
+            tmp = doMinMax(n - 1, moves[k].getGame().getBoard());
+            if (game.getPlayerSymbol() == FieldType.O)
                 ret = (ret > tmp ? ret : tmp);
             else
                 ret = (ret < tmp ? ret : tmp);
@@ -73,7 +73,7 @@ public class MinMax {
         return ret;
     }
 
-    public int chooseMove( int nMoves) {
+    public int chooseMove(int nMoves) {
         int index = 0, maxPoints = Integer.MIN_VALUE, currentPoints = 0;
         int i = 0;
         findAllMoves(currentState, possibleMoves);

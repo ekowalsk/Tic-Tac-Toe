@@ -60,16 +60,20 @@ public class Game {
             }
             if (playerColumnCount == 3)
                 rating += 100;
-            if (playerColumnCount == 2 && opponentColumnCount == 0)
-                rating += 60;
-            if (playerColumnCount == 0 && opponentColumnCount == 2)
+            if (opponentColumnCount == 3)
                 rating -= 100;
+            if (playerColumnCount == 2 && opponentColumnCount == 0)
+                rating += 30;
+            if (playerColumnCount == 0 && opponentColumnCount == 2)
+                rating -= 30;
             if (playerRowCount == 3)
                 rating += 100;
-            if (playerRowCount == 2 && opponentRowCount == 0)
-                rating += 60;
-            if (playerRowCount == 0 && opponentRowCount == 2)
+            if (opponentRowCount == 3)
                 rating -= 100;
+            if (playerRowCount == 2 && opponentRowCount == 0)
+                rating += 30;
+            if (playerRowCount == 0 && opponentRowCount == 2)
+                rating -= 30;
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -90,16 +94,20 @@ public class Game {
         }
         if (playerCross1Count == 3)
             rating += 100;
-        if (playerCross1Count == 2 && opponentCross1Count == 0)
-            rating += 60;
-        if (playerCross1Count == 0 && opponentCross1Count == 2)
+        if (opponentCross1Count == 3)
             rating -= 100;
+        if (playerCross1Count == 2 && opponentCross1Count == 0)
+            rating += 30;
+        if (playerCross1Count == 0 && opponentCross1Count == 2)
+            rating -= 30;
         if (playerCross2Count == 3)
             rating += 100;
-        if (playerCross2Count == 2 && opponentCross2Count == 0)
-            rating += 60;
-        if (playerCross2Count == 0 && opponentCross2Count == 2)
+        if (opponentCross2Count == 3 )
             rating -= 100;
+        if (playerCross2Count == 2 && opponentCross2Count == 0)
+            rating += 30;
+        if (playerCross2Count == 0 && opponentCross2Count == 2)
+            rating -= 30;
 
         return rating;
     }

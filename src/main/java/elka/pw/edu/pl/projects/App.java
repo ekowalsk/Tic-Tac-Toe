@@ -7,11 +7,16 @@ public class App {
 
     public static void main(String[] args) {
         Board actualBoard = new Board();
+        actualBoard.setField(1,1,FieldType.O);
+        actualBoard.setField(2,2,FieldType.X);
+        actualBoard.setField(0,0,FieldType.O);
+        actualBoard.setField(2,0,FieldType.X);
+        actualBoard.setField(2,1,FieldType.O);
+        actualBoard.setField(0,1,FieldType.X);
 
-        actualBoard.setField(1,1, FieldType.O);
-        actualBoard.setField(0,0, FieldType.X);
-        actualBoard.setField(0,1, FieldType.X);
-        actualBoard.setField(1,0, FieldType.O);
+
+
+
 
 
         Game actualGame = new Game (actualBoard, FieldType.O);
