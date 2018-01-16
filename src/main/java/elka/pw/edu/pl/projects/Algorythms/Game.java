@@ -13,6 +13,7 @@ public class Game {
     private FieldType playerSymbol;
     private FieldType opponentSymbol;
 
+
     public Game(Board otherBoard, FieldType symbol) {
         board = new Board();
         board.setBoard(otherBoard.getBoard());
@@ -47,33 +48,27 @@ public class Game {
                     playerRowCount++;
                 else if (board.getField(y, x) == opponentSymbol)
                     opponentRowCount++;
-                if ((x == 0 || x == 2) && (y == 0 || y == 2)) {
-                    if (board.getField(x, y) == playerSymbol)
-                        rating += 2;
-                    else rating -= 2;
-                }
-                if (x == 1 && y == 1) {
-                    if (board.getField(x, y) == playerSymbol)
-                        rating += 6;
-                    else rating -= 6;
-                }
             }
-            if (playerColumnCount == 3)
+            if (playerColumnCount == 3) {
                 rating += 100;
-            if (opponentColumnCount == 3)
+            }
+            if (opponentColumnCount == 3) {
                 rating -= 100;
+            }
             if (playerColumnCount == 2 && opponentColumnCount == 0)
                 rating += 30;
             if (playerColumnCount == 0 && opponentColumnCount == 2)
-                rating -= 30;
-            if (playerRowCount == 3)
+                rating -= 60;
+            if (playerRowCount == 3) {
                 rating += 100;
-            if (opponentRowCount == 3)
+            }
+            if (opponentRowCount == 3) {
                 rating -= 100;
+            }
             if (playerRowCount == 2 && opponentRowCount == 0)
                 rating += 30;
             if (playerRowCount == 0 && opponentRowCount == 2)
-                rating -= 30;
+                rating -= 60;
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -92,25 +87,30 @@ public class Game {
                 opponentCross2Count++;
             }
         }
-        if (playerCross1Count == 3)
+        if (playerCross1Count == 3) {
             rating += 100;
-        if (opponentCross1Count == 3)
+        }
+        if (opponentCross1Count == 3) {
             rating -= 100;
+        }
         if (playerCross1Count == 2 && opponentCross1Count == 0)
             rating += 30;
         if (playerCross1Count == 0 && opponentCross1Count == 2)
-            rating -= 30;
-        if (playerCross2Count == 3)
+            rating -= 60;
+        if (playerCross2Count == 3) {
             rating += 100;
-        if (opponentCross2Count == 3 )
+        }
+        if (opponentCross2Count == 3) {
             rating -= 100;
+        }
         if (playerCross2Count == 2 && opponentCross2Count == 0)
             rating += 30;
         if (playerCross2Count == 0 && opponentCross2Count == 2)
-            rating -= 30;
+            rating -= 60;
 
         return rating;
     }
+
 
     public void setBoard(Board other) {
         board.setBoard(other.getBoard());

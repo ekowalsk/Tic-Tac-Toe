@@ -25,4 +25,13 @@ public class MoveTrack {
         freeIndex++;
     }
 
+    public void printMove(){
+        finishState.getBoard().print();
+        System.out.println(finishState.getPlayerSymbol());
+    }
+
+    public Position getMove (){
+        return moves[0];
+    }
+
 }

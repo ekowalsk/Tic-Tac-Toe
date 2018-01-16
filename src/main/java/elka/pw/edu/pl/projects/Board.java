@@ -29,8 +29,8 @@ public class Board {
             }
     }
 
-    public void setField(int x, int y, FieldType value) {
-        board[x][y] = value;
+    public void setField(Position pos, FieldType value) {
+        board[pos.getX()][pos.getY()] = value;
     }
 
     public FieldType getField(int x, int y){
