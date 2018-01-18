@@ -40,35 +40,32 @@ public class Game {
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                if (board.getField(x, y) == playerSymbol)
+                if (board.getField(x, y) == playerSymbol) {
                     playerColumnCount++;
-                else if (board.getField(x, y) == opponentSymbol)
+                } else if (board.getField(x, y) == opponentSymbol) {
                     opponentColumnCount++;
-                if (board.getField(y, x) == playerSymbol)
+                }
+                if (board.getField(y, x) == playerSymbol) {
                     playerRowCount++;
-                else if (board.getField(y, x) == opponentSymbol)
+                } else if (board.getField(y, x) == opponentSymbol) {
                     opponentRowCount++;
+                }
             }
-            if (playerColumnCount == 3) {
+            if (opponentColumnCount == 3 || opponentRowCount == 3)
+                return -1000;
+            if (playerColumnCount == 3 || playerRowCount == 3)
+                return 1000;
+            if ((playerColumnCount == 0 && opponentColumnCount == 2) ||
+                    (playerRowCount == 0 && opponentRowCount == 2))
+                return -900;
+            else if ((playerColumnCount == 2 && opponentColumnCount == 0) ||
+                    (playerRowCount == 2 && opponentRowCount == 0))
                 rating += 100;
-            }
-            if (opponentColumnCount == 3) {
-                rating -= 100;
-            }
-            if (playerColumnCount == 2 && opponentColumnCount == 0)
-                rating += 30;
-            if (playerColumnCount == 0 && opponentColumnCount == 2)
-                rating -= 60;
-            if (playerRowCount == 3) {
-                rating += 100;
-            }
-            if (opponentRowCount == 3) {
-                rating -= 100;
-            }
-            if (playerRowCount == 2 && opponentRowCount == 0)
-                rating += 30;
-            if (playerRowCount == 0 && opponentRowCount == 2)
-                rating -= 60;
+
+            else if ((playerColumnCount == 1 && opponentColumnCount == 0) || (playerRowCount == 1 && opponentRowCount == 0))
+                rating += 10;
+            else if ((playerColumnCount == 0 && opponentColumnCount == 1) || (playerRowCount == 0 && opponentRowCount == 1))
+                rating -= 10;
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -87,26 +84,25 @@ public class Game {
                 opponentCross2Count++;
             }
         }
-        if (playerCross1Count == 3) {
+        if (opponentCross1Count == 3 || opponentCross2Count == 3) {
+            return -1000;
+        }
+        if (playerCross1Count == 3 || playerCross2Count == 3) {
+            return 1000;
+        }
+        if ((playerCross1Count == 0 && opponentCross1Count == 2) ||
+                (playerCross2Count == 0 && opponentCross2Count == 2))
+            return -900;
+        if ((playerCross1Count == 2 && opponentCross1Count == 0) ||
+                (playerCross2Count == 2 && opponentCross2Count == 0))
             rating += 100;
-        }
-        if (opponentCross1Count == 3) {
-            rating -= 100;
-        }
-        if (playerCross1Count == 2 && opponentCross1Count == 0)
-            rating += 30;
-        if (playerCross1Count == 0 && opponentCross1Count == 2)
-            rating -= 60;
-        if (playerCross2Count == 3) {
-            rating += 100;
-        }
-        if (opponentCross2Count == 3) {
-            rating -= 100;
-        }
-        if (playerCross2Count == 2 && opponentCross2Count == 0)
-            rating += 30;
-        if (playerCross2Count == 0 && opponentCross2Count == 2)
-            rating -= 60;
+
+        else if ((playerCross1Count == 1 && opponentCross1Count == 0) ||
+                (playerCross2Count == 1 && opponentCross2Count == 0))
+            rating += 10;
+        else if ((playerCross1Count == 0 && opponentCross1Count == 1) ||
+                (playerCross2Count == 0 && opponentCross2Count == 1))
+            rating -= 10;
 
         return rating;
     }

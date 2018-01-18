@@ -21,12 +21,12 @@ public class MinMax {
                     Board newBoard = new Board();
                     newBoard.setBoard(game.getBoard().getBoard());
                     newBoard.setField(new Position(x, y), game.getPlayerSymbol());
-                    Game newGame = new Game(newBoard, game.getOpponentSymbol());
+                    Game newGame = new Game(newBoard, game.getPlayerSymbol());
                     MoveTrack moveTrack = new MoveTrack(newGame);
                     moveTrack.addMove(new Position(x, y));
                     int index = 0;
                     while (moves[index] != null)
-                    index++;
+                        index++;
                     moves[index] = moveTrack;
 
                 }
@@ -35,13 +35,30 @@ public class MinMax {
     }
 
 
-    public int doMinMax(int n, Game game) {
+    public int doMinMax(int n, Game game, FieldType player) {
         int ret;
         int tmp;
+        FieldType opponent;
         MoveTrack[] moves = new MoveTrack[500];
         Game newGame = new Game(game.getBoard(), game.getPlayerSymbol());
 
-        if (newGame.getPlayerSymbol() == FieldType.O)
+        //if (newGame.getPlayerSymbol() == FieldType.O)
+        if (player == FieldType.O)
+            opponent = FieldType.X;
+        else
+            opponent = FieldType.O;
+        if (n % 2 == 0) {
+            newGame.setPlayerSymbol(opponent);
+            newGame.setOpponentSymbol(player);
+        } else {
+            newGame.setPlayerSymbol(player);
+            newGame.setOpponentSymbol(opponent);
+        }
+        if (n == 0) {
+            newGame.setPlayerSymbol(player);
+            newGame.setOpponentSymbol(opponent);
+        }
+        if (newGame.getPlayerSymbol() == player)
             ret = Integer.MIN_VALUE;
         else
             ret = Integer.MAX_VALUE;
@@ -49,16 +66,25 @@ public class MinMax {
         if (n > 0) {
             findAllMoves(newGame, moves);
         }
-        /*for (int i = 0; moves[i] != null; i++) {
+        for (int i = 0; moves[i] != null; i++) {
             moves[i].printMove();
-        }*/
-
-        if (n == 0 || moves[0] == null) {
-            return newGame.rateBoard();
         }
+
+        if (n == 0) {
+            int value = newGame.rateBoard();
+            return value;
+        }
+        if (moves[0] == null) {
+            newGame.setPlayerSymbol(player);
+            newGame.setOpponentSymbol(opponent);
+            ret = Integer.MIN_VALUE;
+            int value = newGame.rateBoard();
+            return value;
+        }
+
         for (int k = 0; moves[k] != null; k++) {
-            tmp = doMinMax(n - 1, moves[k].getGame());
-            if (newGame.getPlayerSymbol() == FieldType.O)
+            tmp = doMinMax(n - 1, moves[k].getGame(), player);
+            if (newGame.getPlayerSymbol() == player)
                 ret = (ret > tmp ? ret : tmp);
             else
                 ret = (ret < tmp ? ret : tmp);
@@ -67,7 +93,8 @@ public class MinMax {
     }
 
     public int chooseMove(int nMoves) {
-        int index = 0, maxPoints = Integer.MIN_VALUE, currentPoints;
+        int index = 0, maxPoints = Integer.MIN_VALUE;
+        int currentPoints;
         findAllMoves(currentState, possibleMoves);
         /*int i = 0;
         while (possibleMoves[i] != null) {
@@ -77,12 +104,13 @@ public class MinMax {
         }*/
         int k = 0;
         while (possibleMoves[k] != null) {
-            if ((currentPoints = doMinMax(nMoves, possibleMoves[k].getGame())) > maxPoints) {
+            if ((currentPoints = doMinMax(nMoves, possibleMoves[k].getGame(), currentState.getPlayerSymbol())) > maxPoints) {
                 maxPoints = currentPoints;
                 index = k;
             }
             k++;
         }
+
         currentState.setBoard(possibleMoves[index].getGame().getBoard());
         return index;
     }
