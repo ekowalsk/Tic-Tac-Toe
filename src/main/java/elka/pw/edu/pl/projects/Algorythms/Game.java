@@ -2,6 +2,7 @@ package elka.pw.edu.pl.projects.Algorythms;
 
 import elka.pw.edu.pl.projects.Board;
 import elka.pw.edu.pl.projects.Enums.FieldType;
+import elka.pw.edu.pl.projects.Enums.HasWon;
 
 /**
  * stores current board and current player symbol, it also has a list of possible moves
@@ -27,7 +28,7 @@ public class Game {
     /**
      * returns points in order to estimate how gainful is for the current Player the state of the Board after his move
      */
-    public int rateBoard() {
+    public int rateBoard(HasWon isWinner) {
         int rating = 0;
         int playerRowCount = 0;
         int opponentRowCount = 0;
@@ -37,36 +38,28 @@ public class Game {
         int opponentCross1Count = 0;
         int playerCross2Count = 0;
         int opponentCross2Count = 0;
+        int emptyFields = 0;
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                if (board.getField(x, y) == playerSymbol) {
+                if (board.getField(x, y) == playerSymbol)
                     playerColumnCount++;
-                } else if (board.getField(x, y) == opponentSymbol) {
+                else if (board.getField(x, y) == opponentSymbol)
                     opponentColumnCount++;
-                }
-                if (board.getField(y, x) == playerSymbol) {
+                if (board.getField(y, x) == playerSymbol)
                     playerRowCount++;
-                } else if (board.getField(y, x) == opponentSymbol) {
+                else if (board.getField(y, x) == opponentSymbol)
                     opponentRowCount++;
-                }
             }
 
-            if (playerColumnCount == 3 || playerRowCount == 3)
+            if (playerColumnCount == 3 || playerRowCount == 3) {
+                isWinner.winner = playerSymbol;
                 return 1000;
-            if (opponentColumnCount == 3 || opponentRowCount == 3)
+            }
+            if (opponentColumnCount == 3 || opponentRowCount == 3) {
+                isWinner.winner = opponentSymbol;
                 return -1000;
-            /*if ((playerColumnCount == 0 && opponentColumnCount == 2) ||
-                    (playerRowCount == 0 && opponentRowCount == 2))
-                return -900;
-            else if ((playerColumnCount == 2 && opponentColumnCount == 0) ||
-                    (playerRowCount == 2 && opponentRowCount == 0))
-                rating += 100;
-
-            else if ((playerColumnCount == 1 && opponentColumnCount == 0) || (playerRowCount == 1 && opponentRowCount == 0))
-                rating += 10;
-            else if ((playerColumnCount == 0 && opponentColumnCount == 1) || (playerRowCount == 0 && opponentRowCount == 1))
-                rating -= 10;*/
+            }
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -86,28 +79,15 @@ public class Game {
             }
         }
         if (playerCross1Count == 3 || playerCross2Count == 3) {
+            isWinner.winner = playerSymbol;
             return 1000;
         }
         if (opponentCross1Count == 3 || opponentCross2Count == 3) {
+            isWinner.winner = opponentSymbol;
             return -1000;
         }
-        /*if ((playerCross1Count == 0 && opponentCross1Count == 2) ||
-                (playerCross2Count == 0 && opponentCross2Count == 2))
-            return -900;
-        if ((playerCross1Count == 2 && opponentCross1Count == 0) ||
-                (playerCross2Count == 2 && opponentCross2Count == 0))
-            rating += 100;
-
-        else if ((playerCross1Count == 1 && opponentCross1Count == 0) ||
-                (playerCross2Count == 1 && opponentCross2Count == 0))
-            rating += 10;
-        else if ((playerCross1Count == 0 && opponentCross1Count == 1) ||
-                (playerCross2Count == 0 && opponentCross2Count == 1))
-            rating -= 10;*/
-
         return rating;
     }
-
 
     public void setBoard(Board other) {
         board.setBoard(other.getBoard());

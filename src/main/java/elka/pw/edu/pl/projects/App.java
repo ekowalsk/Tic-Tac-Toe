@@ -8,21 +8,20 @@ public class App {
 
     public static void main(String[] args) {
         Board actualBoard = new Board();
-        actualBoard.setField(new Position(1, 2), FieldType.X);
-        actualBoard.setField(new Position(0, 0), FieldType.O);
-        actualBoard.setField(new Position(0, 1), FieldType.X);
+        /*actualBoard.setField(new Position(0, 0), FieldType.O);
+        actualBoard.setField(new Position(1, 1), FieldType.X);
         actualBoard.setField(new Position(1, 0), FieldType.O);
-        actualBoard.setField(new Position(2, 0), FieldType.X);
-        actualBoard.setField(new Position(1, 1), FieldType.O);
-        actualBoard.setField(new Position(2, 1), FieldType.X);
-        /*actualBoard.setField(new Position(2,1), FieldType.O);*/
+        actualBoard.setField(new Position(2, 0), FieldType.O);
+        actualBoard.setField(new Position(0, 2), FieldType.X);
+        actualBoard.setField(new Position(0, 1), FieldType.O);
+        actualBoard.setField(new Position(2, 1), FieldType.X);*/
 
 
-        Game actualGame = new Game(actualBoard, FieldType.O);
+        Game actualGame = new Game(actualBoard, FieldType.X);
         MinMax minMax = new MinMax(actualGame);
-        //minMax.findAllMoves(minMax.currentState, minMax.possibleMoves);
-        int index = minMax.chooseMove(2);
-        minMax.currentState.getBoard().print();
+        minMax.comp2comp();
+        //int index = minMax.chooseMove(6);
+        //minMax.currentState.getBoard().print();
 
 
     }
