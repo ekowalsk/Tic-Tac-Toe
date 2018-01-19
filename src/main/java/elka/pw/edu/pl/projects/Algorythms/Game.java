@@ -58,6 +58,16 @@ public class Game {
                 isWinner.winner = opponentSymbol;
                 return -1000;
             }
+            if ((playerColumnCount == 0 && opponentColumnCount == 2)
+                    || (playerRowCount == 0 && opponentRowCount == 2)) {
+                isWinner.winner = playerSymbol;
+                return -1000;
+            }
+            /*if ((playerColumnCount == 2 && opponentColumnCount == 0)
+                    || (playerRowCount == 2 && opponentRowCount == 0)) {
+                isWinner.winner = playerSymbol;
+                rating += 100;
+            }*/
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -84,6 +94,16 @@ public class Game {
             isWinner.winner = opponentSymbol;
             return -1000;
         }
+        if ((playerCross1Count == 0 && opponentCross1Count == 2 )
+                || (playerCross2Count == 0 && opponentCross2Count == 2)) {
+            isWinner.winner = playerSymbol;
+            return -1000;
+        }
+        /*if ((playerCross1Count == 2 && opponentCross1Count == 0 )
+                || (playerCross2Count == 2 && opponentCross2Count == 0)) {
+            isWinner.winner = playerSymbol;
+            rating += 100;
+        }*/
         return rating;
     }
 

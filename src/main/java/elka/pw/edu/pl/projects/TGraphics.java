@@ -69,13 +69,16 @@ public class TGraphics extends JFrame {
                         updateGame(currentPlayer, rowSelected, colSelected); // update state
                         // Switch player
                         currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
-                        Game actualGame = new Game (board, currentPlayer);
-                        MinMax minMax = new MinMax(actualGame);
-                        minMax.chooseMove(6);
-                        if (MinMax.possibleMoves[0] != null) {
-                            board[MinMax.possibleMoves[0].getMove().getX()][MinMax.possibleMoves[0].getMove().getY()] = currentPlayer;
-                            updateGame(currentPlayer, MinMax.possibleMoves[0].getMove().getX(), MinMax.possibleMoves[0].getMove().getY());
-                            currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+                        repaint();
+                        if (currentState != GameState.CROSS_WON) {
+                            Game actualGame = new Game(board, currentPlayer);
+                            MinMax minMax = new MinMax(actualGame);
+                            minMax.chooseMove(6);
+                            if (MinMax.possibleMoves[0] != null) {
+                                board[MinMax.possibleMoves[0].getMove().getX()][MinMax.possibleMoves[0].getMove().getY()] = currentPlayer;
+                                updateGame(currentPlayer, MinMax.possibleMoves[0].getMove().getX(), MinMax.possibleMoves[0].getMove().getY());
+                                currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+                            }
                         }
                     }
                 } else {       // game over

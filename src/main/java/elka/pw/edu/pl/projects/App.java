@@ -16,6 +16,8 @@ public class App {
         actualBoard.setField(new Position(0, 2), FieldType.X);
         actualBoard.setField(new Position(0, 1), FieldType.O);
         actualBoard.setField(new Position(2, 1), FieldType.X);*/
+
+
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -27,9 +29,9 @@ public class App {
             for (int y = 0; y < 3; y++) {
                 actualBoard[x][y] = FieldType.E;
             }
-        actualBoard[2][2] = FieldType.O;
-        actualBoard[0][0] = FieldType.X;
         actualBoard[2][0] = FieldType.O;
+        actualBoard[1][0] = FieldType.X;
+        actualBoard[2][1] = FieldType.O;
 
 
         Game actualGame = new Game(actualBoard, FieldType.X);
@@ -37,7 +39,6 @@ public class App {
         //minMax.comp2comp();
         int index = minMax.chooseMove(6);
         MinMax.possibleMoves[0].printMove();
-
 
     }
 }
