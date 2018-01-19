@@ -8,7 +8,7 @@ import elka.pw.edu.pl.projects.Enums.FieldType;
  */
 public class Board {
 
-    private FieldType[][] board;
+    public FieldType[][] board;
 
     public Board() {
         board = new FieldType[3][3];

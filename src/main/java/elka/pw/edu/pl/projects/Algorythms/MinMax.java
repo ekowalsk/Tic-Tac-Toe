@@ -1,6 +1,5 @@
 package elka.pw.edu.pl.projects.Algorythms;
 
-import elka.pw.edu.pl.projects.Board;
 import elka.pw.edu.pl.projects.Enums.FieldType;
 import elka.pw.edu.pl.projects.Enums.HasWon;
 import elka.pw.edu.pl.projects.MoveTrack;
@@ -11,18 +10,16 @@ public class MinMax {
     public static MoveTrack[] possibleMoves;
 
     public MinMax(Game state) {
-        currentState = new Game(state.getBoard(), state.getPlayerSymbol());
+        currentState = new Game(state.board, state.playerSymbol);
         possibleMoves = new MoveTrack[600];
     }
 
     public void findAllMoves(Game game, MoveTrack[] moves) {
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 3; x++) {
-                if (game.getBoard().getField(x, y) == FieldType.E) {
-                    Board newBoard = new Board();
-                    newBoard.setBoard(game.getBoard().getBoard());
-                    newBoard.setField(new Position(x, y), game.getPlayerSymbol());
-                    Game newGame = new Game(newBoard, game.getOpponentSymbol());
+                if (game.board[x][y] == FieldType.E) {
+                    Game newGame = new Game(game.board, game.opponentSymbol);
+                    newGame.board[x][y] = game.playerSymbol;
                     MoveTrack moveTrack = new MoveTrack(newGame);
                     moveTrack.addMove(new Position(x, y));
                     int index = 0;
@@ -39,15 +36,15 @@ public class MinMax {
         HasWon winner = new HasWon();
         FieldType opponent;
         MoveTrack[] moves = new MoveTrack[100];
-        Game newGame = new Game(game.getBoard(), game.getPlayerSymbol());
+        Game newGame = new Game(game.board, game.playerSymbol);
 
         if (player == FieldType.O)
             opponent = FieldType.X;
         else
             opponent = FieldType.O;
         if (n == 0) {
-            newGame.setPlayerSymbol(player);
-            newGame.setOpponentSymbol(opponent);
+            newGame.playerSymbol = player;
+            newGame.opponentSymbol = opponent;
         }
 
         if (n > 0)
@@ -57,12 +54,12 @@ public class MinMax {
             return newGame.rateBoard(winner);
 
         if (moves[0] == null) {
-            newGame.setPlayerSymbol(player);
-            newGame.setOpponentSymbol(opponent);
+            newGame.playerSymbol = player;
+            newGame.opponentSymbol = opponent;
             return newGame.rateBoard(winner);
         }
 
-        if (newGame.getPlayerSymbol() == player) {
+        if (newGame.playerSymbol == player) {
             for (int k = 0; moves[k] != null; k++) {
                 tmp = doMinMax(n - 1, moves[k].getGame(), player, alpha, beta);
                 if (tmp > alpha)
@@ -93,14 +90,14 @@ public class MinMax {
         findAllMoves(currentState, possibleMoves);
         int k = 0;
         while (possibleMoves[k] != null) {
-            if ((currentPoints = doMinMax(nMoves, possibleMoves[k].getGame(), currentState.getPlayerSymbol(), Integer.MIN_VALUE, Integer.MAX_VALUE)) > maxPoints) {
+            if ((currentPoints = doMinMax(nMoves, possibleMoves[k].getGame(), currentState.playerSymbol, Integer.MIN_VALUE, Integer.MAX_VALUE)) > maxPoints) {
                 maxPoints = currentPoints;
                 index = k;
             }
             k++;
         }
         if (possibleMoves[index] != null) {
-            currentState.setBoard(possibleMoves[index].getGame().getBoard());
+            currentState.setBoard(possibleMoves[index].getGame().board);
             possibleMoves[0] = possibleMoves[index];
         }
         return index;
@@ -112,22 +109,23 @@ public class MinMax {
         int index = chooseMove(6);
         while (possibleMoves[0] != null) {
             Position pos = possibleMoves[index].getMove();
-            currentState.getBoard().setField(pos, currentState.getPlayerSymbol());
-            if (currentState.getPlayerSymbol() == FieldType.O) {
-                currentState.setPlayerSymbol(FieldType.X);
-                currentState.setOpponentSymbol(FieldType.O);
+            currentState.board[pos.getX()][pos.getY()] = currentState.playerSymbol;
+            //currentState.getBoard().setField(pos, currentState.getPlayerSymbol());
+            if (currentState.playerSymbol == FieldType.O) {
+                currentState.playerSymbol = FieldType.X;
+                currentState.opponentSymbol = FieldType.O;
             } else {
-                currentState.setPlayerSymbol(FieldType.O);
-                currentState.setOpponentSymbol(FieldType.X);
+                currentState.playerSymbol = FieldType.O;
+                currentState.opponentSymbol = FieldType.X;
             }
             currentState.rateBoard(isWinner);
-            currentState.getBoard().print();
+            currentState.printBoard();
             cleanMoves();
             index = chooseMove(6);
         }
     }
 
-    private static void cleanMoves() {
+    public static void cleanMoves() {
         MoveTrack newTracks[] = new MoveTrack[100];
         possibleMoves = newTracks;
     }

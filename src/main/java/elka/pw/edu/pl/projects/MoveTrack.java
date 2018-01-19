@@ -11,7 +11,7 @@ public class MoveTrack {
     private int freeIndex;
 
     public MoveTrack(Game game) {
-        finishState = new Game (game.getBoard(), game.getPlayerSymbol());
+        finishState = new Game (game.board, game.playerSymbol);
         moves = new Position[100];
         freeIndex = 0;
     }
@@ -26,8 +26,8 @@ public class MoveTrack {
     }
 
     public void printMove(){
-        finishState.getBoard().print();
-        System.out.println(finishState.getPlayerSymbol());
+        finishState.printBoard();
+        System.out.println(finishState.playerSymbol);
     }
 
     public Position getMove (){

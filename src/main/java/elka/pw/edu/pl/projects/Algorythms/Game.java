@@ -1,6 +1,5 @@
 package elka.pw.edu.pl.projects.Algorythms;
 
-import elka.pw.edu.pl.projects.Board;
 import elka.pw.edu.pl.projects.Enums.FieldType;
 import elka.pw.edu.pl.projects.Enums.HasWon;
 
@@ -10,14 +9,14 @@ import elka.pw.edu.pl.projects.Enums.HasWon;
  */
 public class Game {
 
-    private Board board;
-    private FieldType playerSymbol;
-    private FieldType opponentSymbol;
+    public FieldType[][] board;
+    public FieldType playerSymbol;
+    public FieldType opponentSymbol;
 
 
-    public Game(Board otherBoard, FieldType symbol) {
-        board = new Board();
-        board.setBoard(otherBoard.getBoard());
+    public Game(FieldType[][] otherBoard, FieldType symbol) {
+        board = new FieldType[3][3];
+        setBoard(otherBoard);
         this.playerSymbol = symbol;
         if (symbol == FieldType.O)
             this.opponentSymbol = FieldType.X;
@@ -38,17 +37,16 @@ public class Game {
         int opponentCross1Count = 0;
         int playerCross2Count = 0;
         int opponentCross2Count = 0;
-        int emptyFields = 0;
 
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                if (board.getField(x, y) == playerSymbol)
+                if (board[x][y] == playerSymbol)
                     playerColumnCount++;
-                else if (board.getField(x, y) == opponentSymbol)
+                else if (board[x][y] == opponentSymbol)
                     opponentColumnCount++;
-                if (board.getField(y, x) == playerSymbol)
+                if (board[y][x] == playerSymbol)
                     playerRowCount++;
-                else if (board.getField(y, x) == opponentSymbol)
+                else if (board[y][x] == opponentSymbol)
                     opponentRowCount++;
             }
 
@@ -67,14 +65,14 @@ public class Game {
             opponentRowCount = 0;
         }
         for (int x = 0, y = 2; x < 3; x++, y--) {
-            if (board.getField(x, x) == playerSymbol) {
+            if (board[x][x] == playerSymbol) {
                 playerCross1Count++;
-            } else if (board.getField(x, x) == opponentSymbol) {
+            } else if (board[x][x] == opponentSymbol) {
                 opponentCross1Count++;
             }
-            if (board.getField(x, y) == playerSymbol) {
+            if (board[x][y] == playerSymbol) {
                 playerCross2Count++;
-            } else if (board.getField(x, y) == opponentSymbol) {
+            } else if (board[x][y] == opponentSymbol) {
                 opponentCross2Count++;
             }
         }
@@ -89,27 +87,17 @@ public class Game {
         return rating;
     }
 
-    public void setBoard(Board other) {
-        board.setBoard(other.getBoard());
+    public void setBoard(FieldType[][] other) {
+        for (int x = 0; x < 3; x++)
+            for (int y = 0; y < 3; y++)
+                board[x][y] = other[x][y];
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setPlayerSymbol(FieldType symbol) {
-        this.playerSymbol = symbol;
-    }
-
-    public void setOpponentSymbol(FieldType symbol) {
-        this.opponentSymbol = symbol;
-    }
-
-    public FieldType getPlayerSymbol() {
-        return playerSymbol;
-    }
-
-    public FieldType getOpponentSymbol() {
-        return opponentSymbol;
+    public void printBoard() {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++)
+                System.out.print(board[x][y] + " ");
+            System.out.println("\n");
+        }
     }
 }
