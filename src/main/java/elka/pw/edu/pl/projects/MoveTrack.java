@@ -7,31 +7,21 @@ import elka.pw.edu.pl.projects.Algorythms.Game;
  */
 public class MoveTrack {
     private Game finishState;
-    private Position[] moves;
-    private int freeIndex;
+    public int xMove;
+    public int yMove;
 
-    public MoveTrack(Game game) {
+    public MoveTrack(Game game, int x, int y) {
         finishState = new Game (game.board, game.playerSymbol);
-        moves = new Position[100];
-        freeIndex = 0;
+        xMove = x;
+        yMove = y;
     }
 
     public Game getGame() {
         return finishState;
     }
 
-    public void addMove(Position pos) {
-        moves[freeIndex] = pos;
-        freeIndex++;
-    }
-
     public void printMove(){
         finishState.printBoard();
         System.out.println(finishState.playerSymbol);
     }
-
-    public Position getMove (){
-        return moves[0];
-    }
-
 }

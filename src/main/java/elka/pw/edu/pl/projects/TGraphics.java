@@ -75,8 +75,8 @@ public class TGraphics extends JFrame {
                             MinMax minMax = new MinMax(actualGame);
                             minMax.chooseMove(4);
                             if (MinMax.possibleMoves[0] != null) {
-                                board[MinMax.possibleMoves[0].getMove().getX()][MinMax.possibleMoves[0].getMove().getY()] = currentPlayer;
-                                updateGame(currentPlayer, MinMax.possibleMoves[0].getMove().getX(), MinMax.possibleMoves[0].getMove().getY());
+                                board[MinMax.possibleMoves[0].xMove][MinMax.possibleMoves[0].yMove] = currentPlayer;
+                                updateGame(currentPlayer, MinMax.possibleMoves[0].xMove, MinMax.possibleMoves[0].yMove);
                                 currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
                             }
                         }
