@@ -11,6 +11,9 @@ public class Game {
     public FieldType[][] board;
     public FieldType playerSymbol;
     public FieldType opponentSymbol;
+    public static final int MAX_POINTS = 1000;
+    public static final int MIN_POINTS = -1000;
+
 
 
     public Game(FieldType[][] otherBoard, FieldType symbol) {
@@ -34,8 +37,6 @@ public class Game {
         int opponentCross1Count = 0;
         int playerCross2Count = 0;
         int opponentCross2Count = 0;
-        //boolean isPlayerWinner = false;
-        //boolean has2op = false;
         FieldType opponentPlayer;
 
         if (ratedPlayer == FieldType.O)
@@ -55,25 +56,10 @@ public class Game {
                     opponentRowCount++;
             }
 
-            if (opponentColumnCount == 3 || opponentRowCount == 3) {
-                return -1000;
-            }
-
-            if (playerColumnCount == 3 || playerRowCount == 3) {
-                //isPlayerWinner = true;
-                //return 1000;
-                return 1000;
-            }
-
-            /*if ((opponentColumnCount == 2 && playerColumnCount == 0)
-                    || (opponentRowCount == 2 && playerRowCount == 0)) {
-                has2op = true;
-            }*/
-
-            /*if ((opponentColumnCount == 0 && playerColumnCount == 2)
-                    || (opponentRowCount == 0 && playerRowCount == 2)) {
-                rating += 100;
-            }*/
+            if (opponentColumnCount == 3 || opponentRowCount == 3)
+                return MIN_POINTS;
+            if (playerColumnCount == 3 || playerRowCount == 3)
+                return MAX_POINTS;
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -97,47 +83,11 @@ public class Game {
             }
         }
 
-        if (opponentCross1Count == 3 || opponentCross2Count == 3) {
-            return -1000;
-        }
-        if (playerCross1Count == 3 || playerCross2Count == 3) {
-            //isPlayerWinner = true;
-            return 1000;
-        }
-
-       /*if ((opponentCross1Count == 2 && playerCross1Count == 0)
-                || (opponentCross2Count == 2 && playerCross2Count == 0)) {
-            has2op = true;
-        }*/
-
-        /*if ((opponentCross1Count == 0 && playerCross1Count == 2)
-                || (opponentCross2Count == 0 && playerCross2Count == 2)) {
-            rating += 100;
-        }*/
-
-
-        /*if (isPlayerWinner)
-            return 1000;
-        if (has2op)
-            return -1000;*/
+        if (opponentCross1Count == 3 || opponentCross2Count == 3)
+            return MIN_POINTS;
+        if (playerCross1Count == 3 || playerCross2Count == 3)
+            return MAX_POINTS;
         return rating;
-    }
-
-    public boolean hasWon(FieldType symbol, int rowSelected, int colSelected) {
-        return (board[rowSelected][0] == symbol  // 3-in-the-row
-                && board[rowSelected][1] == symbol
-                && board[rowSelected][2] == symbol
-                || board[0][colSelected] == symbol      // 3-in-the-column
-                && board[1][colSelected] == symbol
-                && board[2][colSelected] == symbol
-                || rowSelected == colSelected            // 3-in-the-diagonal
-                && board[0][0] == symbol
-                && board[1][1] == symbol
-                && board[2][2] == symbol
-                || rowSelected + colSelected == 2  // 3-in-the-opposite-diagonal
-                && board[0][2] == symbol
-                && board[1][1] == symbol
-                && board[2][0] == symbol);
     }
 
     public void setBoard(FieldType[][] other) {

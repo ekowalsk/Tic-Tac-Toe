@@ -8,8 +8,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-import static java.lang.Thread.sleep;
-
 /**
  * Tic-Tac-Toe: Two-player Graphics version with Simple-OO
  */
@@ -69,7 +67,7 @@ public class TGraphics extends JFrame {
                         updateGame(currentPlayer, rowSelected, colSelected); // update state
                         // Switch player
                         currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
-                        repaint();
+
                         if (currentState != GameState.CROSS_WON) {
                             Game actualGame = new Game(board, currentPlayer);
                             MinMax minMax = new MinMax(actualGame);
@@ -81,9 +79,11 @@ public class TGraphics extends JFrame {
                             }
                         }
                     }
+                   //comp2comp();
                 } else {       // game over
                     initGame(); // restart the game
                 }
+
                 // Refresh the drawing canvas
                 repaint();  // Call-back paintComponent().
             }
@@ -103,8 +103,20 @@ public class TGraphics extends JFrame {
         pack();  // pack all the components in this JFrame
         setTitle("Tic Tac Toe");
         setVisible(true);  // show this JFrame
-
         initGame(); // initialize the game board contents and game variables
+    }
+
+    void comp2comp (){
+        if (currentState != GameState.CROSS_WON && currentState != GameState.NOUGHT_WON) {
+            Game actualGame = new Game(board, currentPlayer);
+            MinMax minMax = new MinMax(actualGame);
+            minMax.chooseMove(4);
+            if (MinMax.possibleMoves[0] != null) {
+                board[MinMax.possibleMoves[0].xMove][MinMax.possibleMoves[0].yMove] = currentPlayer;
+                updateGame(currentPlayer, MinMax.possibleMoves[0].xMove, MinMax.possibleMoves[0].yMove);
+                currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+            }
+        }
     }
 
     /**
@@ -199,14 +211,15 @@ public class TGraphics extends JFrame {
                     int x1 = col * CELL_SIZE + CELL_PADDING;
                     int y1 = row * CELL_SIZE + CELL_PADDING;
                     if (board[row][col] == FieldType.X) {
-                        g2d.setColor(Color.RED);
+                        g2d.setColor(Color.BLACK);
                         int x2 = (col + 1) * CELL_SIZE - CELL_PADDING;
                         int y2 = (row + 1) * CELL_SIZE - CELL_PADDING;
                         g2d.drawLine(x1, y1, x2, y2);
                         g2d.drawLine(x2, y1, x1, y2);
                     } else if (board[row][col] == FieldType.O) {
-                        g2d.setColor(Color.BLUE);
+                        g2d.setColor(Color.RED);
                         g2d.drawOval(x1, y1, SYMBOL_SIZE, SYMBOL_SIZE);
+
                     }
                 }
             }
@@ -229,17 +242,7 @@ public class TGraphics extends JFrame {
                 statusBar.setForeground(Color.RED);
                 statusBar.setText("'O' Won! Click to play again.");
             }
+
         }
     }
-
-    /** The entry main() method */
-   /* public static void main(String[] args) {
-        // Run GUI codes in the Event-Dispatching thread for thread safety
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TGraphics(); // Let the constructor do the job
-            }
-        });
-    }*/
 }

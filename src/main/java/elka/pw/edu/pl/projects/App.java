@@ -16,23 +16,21 @@ public class App {
                 new TGraphics(); // Let the constructor do the job
             }
         });
-        FieldType [][] actualBoard = new FieldType[3][3];
+        /*FieldType [][] actualBoard = new FieldType[3][3];
         for (int x = 0; x < 3; x++)
             for (int y = 0; y < 3; y++) {
                 actualBoard[x][y] = FieldType.E;
             }
-        actualBoard[2][2] = FieldType.O;
-        actualBoard[1][1] = FieldType.X;
-        actualBoard[2][1] = FieldType.O;
-        actualBoard[2][0] = FieldType.X;
+        actualBoard[1][1] = FieldType.O;
+        actualBoard[2][2] = FieldType.X;
+        actualBoard[1][0] = FieldType.O;
+        actualBoard[1][2] = FieldType.X;
         actualBoard[0][1] = FieldType.O;
-
-
         Game actualGame = new Game(actualBoard, FieldType.X);
         MinMax minMax = new MinMax(actualGame);
         //minMax.comp2comp();
         int index = minMax.chooseMove(2);
-        MinMax.possibleMoves[0].printMove();
+        MinMax.possibleMoves[0].printMove();*/
 
     }
 }
