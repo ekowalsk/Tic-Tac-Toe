@@ -69,7 +69,6 @@ public class MinMax {
                 }
             }
             return alpha;
-
         } else {
             for (int k = 0; moves[k] != null; k++) {
                 tmp = doMinMax(n - 1, moves[k].getGame(), player, alpha, beta);
@@ -86,11 +85,12 @@ public class MinMax {
 
     public int chooseMove(int nMoves) {
         int index = 0, maxPoints = Integer.MIN_VALUE;
-        int currentPoints;
+        int currentPoints = 0;
         findAllMoves(currentState, possibleMoves);
         int k = 0;
         while (possibleMoves[k] != null) {
-            if ((currentPoints = doMinMax(nMoves, possibleMoves[k].getGame(), currentState.playerSymbol, Integer.MIN_VALUE, Integer.MAX_VALUE)) > maxPoints) {
+            currentPoints = doMinMax(nMoves, possibleMoves[k].getGame(), currentState.playerSymbol, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            if (currentPoints > maxPoints) {
                 maxPoints = currentPoints;
                 index = k;
             }

@@ -73,7 +73,7 @@ public class TGraphics extends JFrame {
                         if (currentState != GameState.CROSS_WON) {
                             Game actualGame = new Game(board, currentPlayer);
                             MinMax minMax = new MinMax(actualGame);
-                            minMax.chooseMove(6);
+                            minMax.chooseMove(4);
                             if (MinMax.possibleMoves[0] != null) {
                                 board[MinMax.possibleMoves[0].getMove().getX()][MinMax.possibleMoves[0].getMove().getY()] = currentPlayer;
                                 updateGame(currentPlayer, MinMax.possibleMoves[0].getMove().getX(), MinMax.possibleMoves[0].getMove().getY());

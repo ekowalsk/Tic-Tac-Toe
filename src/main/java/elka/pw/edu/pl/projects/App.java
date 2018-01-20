@@ -30,14 +30,16 @@ public class App {
                 actualBoard[x][y] = FieldType.E;
             }
         actualBoard[2][0] = FieldType.O;
-        actualBoard[1][0] = FieldType.X;
         actualBoard[2][1] = FieldType.O;
+        actualBoard[1][1] = FieldType.X;
+        actualBoard[0][0] = FieldType.O;
+        actualBoard[2][2] = FieldType.X;
 
 
         Game actualGame = new Game(actualBoard, FieldType.X);
         MinMax minMax = new MinMax(actualGame);
         //minMax.comp2comp();
-        int index = minMax.chooseMove(6);
+        int index = minMax.chooseMove(2);
         MinMax.possibleMoves[0].printMove();
 
     }

@@ -38,6 +38,7 @@ public class Game {
         int playerCross2Count = 0;
         int opponentCross2Count = 0;
 
+
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
                 if (board[x][y] == playerSymbol)
@@ -50,24 +51,14 @@ public class Game {
                     opponentRowCount++;
             }
 
+            if (opponentColumnCount == 3 || opponentRowCount == 3) {
+                //isWinner.winner = opponentSymbol;
+                return -1000;
+            }
+
             if (playerColumnCount == 3 || playerRowCount == 3) {
                 isWinner.winner = playerSymbol;
-                return 1000;
             }
-            if (opponentColumnCount == 3 || opponentRowCount == 3) {
-                isWinner.winner = opponentSymbol;
-                return -1000;
-            }
-            if ((playerColumnCount == 0 && opponentColumnCount == 2)
-                    || (playerRowCount == 0 && opponentRowCount == 2)) {
-                isWinner.winner = playerSymbol;
-                return -1000;
-            }
-            /*if ((playerColumnCount == 2 && opponentColumnCount == 0)
-                    || (playerRowCount == 2 && opponentRowCount == 0)) {
-                isWinner.winner = playerSymbol;
-                rating += 100;
-            }*/
 
             playerColumnCount = 0;
             opponentColumnCount = 0;
@@ -76,8 +67,12 @@ public class Game {
         }
         for (int x = 0, y = 2; x < 3; x++, y--) {
             if (board[x][x] == playerSymbol) {
+                if (x == 1)
+                    rating += 3;
                 playerCross1Count++;
             } else if (board[x][x] == opponentSymbol) {
+                if (x == 1)
+                    rating -= 3;
                 opponentCross1Count++;
             }
             if (board[x][y] == playerSymbol) {
@@ -86,24 +81,19 @@ public class Game {
                 opponentCross2Count++;
             }
         }
+
+        if (opponentCross1Count == 3 || opponentCross2Count == 3) {
+            //isWinner.winner = opponentSymbol;
+            return -1000;
+        }
         if (playerCross1Count == 3 || playerCross2Count == 3) {
             isWinner.winner = playerSymbol;
+        }
+
+        //if (isWinner.winner == opponentSymbol)
+          //  return -1000;
+        if (isWinner.winner == playerSymbol)
             return 1000;
-        }
-        if (opponentCross1Count == 3 || opponentCross2Count == 3) {
-            isWinner.winner = opponentSymbol;
-            return -1000;
-        }
-        if ((playerCross1Count == 0 && opponentCross1Count == 2 )
-                || (playerCross2Count == 0 && opponentCross2Count == 2)) {
-            isWinner.winner = playerSymbol;
-            return -1000;
-        }
-        /*if ((playerCross1Count == 2 && opponentCross1Count == 0 )
-                || (playerCross2Count == 2 && opponentCross2Count == 0)) {
-            isWinner.winner = playerSymbol;
-            rating += 100;
-        }*/
         return rating;
     }
 
