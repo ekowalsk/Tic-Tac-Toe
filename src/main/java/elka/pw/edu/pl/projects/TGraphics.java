@@ -4,9 +4,10 @@ import elka.pw.edu.pl.projects.Algorythms.Game;
 import elka.pw.edu.pl.projects.Algorythms.MinMax;
 import elka.pw.edu.pl.projects.Enums.FieldType;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Tic-Tac-Toe: Two-player Graphics version with Simple-OO
@@ -40,15 +41,21 @@ public class TGraphics extends JFrame {
     private FieldType[][] board;
     private DrawCanvas canvas; // Drawing canvas (JPanel) for the game board
     private JLabel statusBar;  // Status Bar
+    public static int depthX;
+    public static int depthO;
+    public static int mode;
 
 
     /**
      * Constructor to setup the game and the GUI components
      */
-    public TGraphics() {
+    public TGraphics(int dX, int dO, int m) {
+
         canvas = new DrawCanvas();  // Construct a drawing canvas (a JPanel)
         canvas.setPreferredSize(new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT));
-
+        depthX = dX;
+        depthO = dO;
+        mode = m;
 
         // The canvas (JPanel) fires a MouseEvent upon mouse-click
         canvas.addMouseListener(new MouseAdapter() {
@@ -61,25 +68,28 @@ public class TGraphics extends JFrame {
                 int colSelected = mouseX / CELL_SIZE;
 
                 if (currentState == GameState.PLAYING) {
-                    if (rowSelected >= 0 && rowSelected < ROWS && colSelected >= 0
-                            && colSelected < COLS && board[rowSelected][colSelected] == FieldType.E) {
-                        board[rowSelected][colSelected] = currentPlayer; // Make a move
-                        updateGame(currentPlayer, rowSelected, colSelected); // update state
-                        // Switch player
-                        currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+                    if (mode == 1) {
+                        if (rowSelected >= 0 && rowSelected < ROWS && colSelected >= 0
+                                && colSelected < COLS && board[rowSelected][colSelected] == FieldType.E) {
+                            board[rowSelected][colSelected] = currentPlayer; // Make a move
+                            updateGame(currentPlayer, rowSelected, colSelected); // update state
+                            // Switch player
+                            currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
 
-                        if (currentState != GameState.CROSS_WON) {
-                            Game actualGame = new Game(board, currentPlayer);
-                            MinMax minMax = new MinMax(actualGame);
-                            minMax.chooseMove(4);
-                            if (MinMax.possibleMoves[0] != null) {
-                                board[MinMax.possibleMoves[0].xMove][MinMax.possibleMoves[0].yMove] = currentPlayer;
-                                updateGame(currentPlayer, MinMax.possibleMoves[0].xMove, MinMax.possibleMoves[0].yMove);
-                                currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+                            if (currentState != GameState.CROSS_WON) {
+                                Game actualGame = new Game(board, currentPlayer);
+                                MinMax minMax = new MinMax(actualGame);
+                                minMax.chooseMove(depthO);
+                                if (MinMax.possibleMoves[0] != null) {
+                                    board[MinMax.possibleMoves[0].xMove][MinMax.possibleMoves[0].yMove] = currentPlayer;
+                                    updateGame(currentPlayer, MinMax.possibleMoves[0].xMove, MinMax.possibleMoves[0].yMove);
+                                    currentPlayer = (currentPlayer == FieldType.X) ? FieldType.O : FieldType.X;
+                                }
                             }
                         }
                     }
-                   //comp2comp();
+                    else
+                        comp2comp();
                 } else {       // game over
                     initGame(); // restart the game
                 }
@@ -106,11 +116,14 @@ public class TGraphics extends JFrame {
         initGame(); // initialize the game board contents and game variables
     }
 
-    void comp2comp (){
+    public void comp2comp() {
         if (currentState != GameState.CROSS_WON && currentState != GameState.NOUGHT_WON) {
             Game actualGame = new Game(board, currentPlayer);
             MinMax minMax = new MinMax(actualGame);
-            minMax.chooseMove(4);
+            if (currentPlayer == FieldType.X)
+                minMax.chooseMove(depthX);
+            else
+                minMax.chooseMove(depthO);
             if (MinMax.possibleMoves[0] != null) {
                 board[MinMax.possibleMoves[0].xMove][MinMax.possibleMoves[0].yMove] = currentPlayer;
                 updateGame(currentPlayer, MinMax.possibleMoves[0].xMove, MinMax.possibleMoves[0].yMove);
@@ -244,5 +257,9 @@ public class TGraphics extends JFrame {
             }
 
         }
+    }
+
+    private static int setXdepth(int a) {
+        return a;
     }
 }

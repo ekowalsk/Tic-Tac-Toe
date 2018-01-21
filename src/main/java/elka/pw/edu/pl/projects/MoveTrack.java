@@ -11,7 +11,7 @@ public class MoveTrack {
     public int yMove;
 
     public MoveTrack(Game game, int x, int y) {
-        finishState = new Game (game.board, game.playerSymbol);
+        finishState = new Game(game.board, game.playerSymbol);
         xMove = x;
         yMove = y;
     }
@@ -20,7 +20,7 @@ public class MoveTrack {
         return finishState;
     }
 
-    public void printMove(){
+    public void printMove() {
         finishState.printBoard();
         System.out.println(finishState.playerSymbol);
     }

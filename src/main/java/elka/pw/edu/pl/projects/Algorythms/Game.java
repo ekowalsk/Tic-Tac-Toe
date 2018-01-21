@@ -15,7 +15,6 @@ public class Game {
     public static final int MIN_POINTS = -1000;
 
 
-
     public Game(FieldType[][] otherBoard, FieldType symbol) {
         board = new FieldType[3][3];
         setBoard(otherBoard);

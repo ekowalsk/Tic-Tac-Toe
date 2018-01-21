@@ -49,10 +49,10 @@ public class MinMax {
         }
 
         for (int k = 0; moves[k] != null; k++) {
-            if (moves[k].getGame().rateBoard(player) == 1000)
-                tmp = n * 1000;
-            else if (moves[k].getGame().rateBoard(player) == -1000)
-                tmp = -n * 1000;
+            if (moves[k].getGame().rateBoard(player) == Game.MAX_POINTS)
+                tmp = n * Game.MAX_POINTS;
+            else if (moves[k].getGame().rateBoard(player) == Game.MIN_POINTS)
+                tmp = n * Game.MIN_POINTS;
             else tmp = doMinMax(n - 1, moves[k].getGame(), player, alpha, beta);
             if (newGame.playerSymbol == player)
                 ret = (ret > tmp ? ret : tmp);
@@ -60,50 +60,12 @@ public class MinMax {
                 ret = (ret < tmp ? ret : tmp);
         }
         return ret;
-
-        /*if (newGame.playerSymbol == player) {
-            for (int k = 0; moves[k] != null; k++) {
-                if (moves[k].getGame().hasWon(player, moves[k].getMove().getX(), moves[k].getMove().getY())) {
-                    //tmp =  n*1000;
-                    //alpha = n * 1000;
-                    //break;
-                }
-                tmp = doMinMax(n - 1, moves[k].getGame(), player, alpha, beta);
-                if (tmp > alpha)
-                    alpha = tmp;
-                if (alpha >= beta) {
-                    break;
-                }
-            }
-            return alpha;
-        } else {
-            for (int k = 0; moves[k] != null; k++) {
-                if (moves[k].getGame().hasWon(player, moves[k].getMove().getX(), moves[k].getMove().getY())) {
-                    //return -n*1000;
-                    //tmp= n*1000;
-                    //break;
-                }
-                else tmp = doMinMax(n - 1, moves[k].getGame(), player, alpha, beta);
-                if (tmp < beta)
-                    beta = tmp;
-                if (alpha >= beta) {
-                    break;
-                }
-            }
-            return beta;
-        }*/
     }
 
     public int doMinMax2(int n, Game game, FieldType player, int alpha, int beta) {
         int tmp = 0;
-        // FieldType opponent;
         MoveTrack[] moves = new MoveTrack[100];
         Game newGame = new Game(game.board, game.playerSymbol);
-        //int ret;
-        /*if (newGame.playerSymbol == player)
-            ret = Integer.MIN_VALUE;
-        else
-            ret = Integer.MAX_VALUE;*/
 
         if (n > 0)
             findAllMoves(newGame, moves);
@@ -113,10 +75,10 @@ public class MinMax {
         }
         if (newGame.playerSymbol == player) {
             for (int k = 0; moves[k] != null; k++) {
-                if (moves[k].getGame().rateBoard(player) == 1000)
-                    tmp = n * 1000;
-                else if (moves[k].getGame().rateBoard(player) == -1000)
-                    tmp = -n * 1000;
+                if (moves[k].getGame().rateBoard(player) == Game.MAX_POINTS)
+                    tmp = n * Game.MAX_POINTS;
+                else if (moves[k].getGame().rateBoard(player) == Game.MIN_POINTS)
+                    tmp = n * Game.MIN_POINTS;
                 else tmp = doMinMax2(n - 1, moves[k].getGame(), player, alpha, beta);
                 if (tmp > alpha)
                     alpha = tmp;
@@ -127,13 +89,12 @@ public class MinMax {
             return alpha;
         } else {
             for (int k = 0; moves[k] != null; k++) {
-                if (moves[k].getGame().rateBoard(player) == 1000) {
-                    //tmp = n * 1000;
-                    beta = n*1000;
+                if (moves[k].getGame().rateBoard(player) == Game.MAX_POINTS) {
+                    beta = n * Game.MAX_POINTS;
                     break;
-                } else if (moves[k].getGame().rateBoard(player) == -1000)
-                    tmp = -n * 1000;
-                else tmp = doMinMax2(n - 1, moves[k].getGame(), player, alpha, beta);
+                } else if (moves[k].getGame().rateBoard(player) == Game.MIN_POINTS) {
+                    tmp = n * Game.MIN_POINTS;
+                } else tmp = doMinMax2(n - 1, moves[k].getGame(), player, alpha, beta);
                 if (tmp < beta)
                     beta = tmp;
                 if (alpha >= beta) {
@@ -144,7 +105,6 @@ public class MinMax {
         }
     }
 
-//}
 
     public int chooseMove(int nMoves) {
         int index = 0, maxPoints = Integer.MIN_VALUE;
@@ -164,31 +124,5 @@ public class MinMax {
             possibleMoves[0] = possibleMoves[index];
         }
         return index;
-    }
-
-    /*public void comp2comp() {
-        currentState.rateBoard();
-        int index = chooseMove(6);
-        while (possibleMoves[0] != null) {
-            Position pos = possibleMoves[index].getMove();
-            currentState.board[pos.getX()][pos.getY()] = currentState.playerSymbol;
-            //currentState.getBoard().setField(pos, currentState.getPlayerSymbol());
-            if (currentState.playerSymbol == FieldType.O) {
-                currentState.playerSymbol = FieldType.X;
-                currentState.opponentSymbol = FieldType.O;
-            } else {
-                currentState.playerSymbol = FieldType.O;
-                currentState.opponentSymbol = FieldType.X;
-            }
-            currentState.rateBoard();
-            currentState.printBoard();
-            cleanMoves();
-            index = chooseMove(6);
-        }
-    }
-*/
-    public static void cleanMoves() {
-        MoveTrack newTracks[] = new MoveTrack[100];
-        possibleMoves = newTracks;
     }
 }
